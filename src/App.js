@@ -4,29 +4,24 @@ import "./styles.css";
 
 function App() {
   const [repositories, setRepositories] = useState([]);
-  const [id, setId] = useState('');
-  const [url, setUrl] = useState('');
-  const [title, setTitle] = useState('');
-  const [techs, setTechs] = useState('');
+  const [dados, setDados] = useState({});
+  // const [url, setUrl] = useState('');
+  // const [title, setTitle] = useState('');
+  // const [techs, setTechs] = useState('');
 
   useEffect(() => {
     api.get('repositories').then(response => {
       setRepositories(response.data);
-    })
+    });
   }, []);
   async function handleAddRepository() {
-    // const repository = {
-      //     id: "123",
-      //     url: "https://github.com/josepholiveira",
-      //     title: "Desafio ReactJS",
-      //     techs: ["React", "Node.js"],
-      // }
     const repository = {
-      id,
-      url,
-      title,
-      techs
-    }
+          id: "123",
+          url: "https://github.com/josepholiveira",
+          title: "Desafio ReactJS",
+          techs: ["React", "Node.js"],
+      }
+
     const response = await api.post('repositories', repository);
     const repo = response.data;
     console.log(repo);
@@ -34,7 +29,8 @@ function App() {
   }
 
   async function handleRemoveRepository(id) {
-    // TODO
+    await api.delete(`repositories/${id}`);
+    setRepositories(repositories.filter(repository => repository.id !== id));
   }
 
   return (
@@ -44,13 +40,13 @@ function App() {
         <li key={repo.id}>
           {repo.title}
 
-          <button onClick={() => handleRemoveRepository(1)}>
+          <button onClick={() => handleRemoveRepository(repo.id)}>
             Remover
           </button>
         </li>
           ))}
       </ul>
-
+      <textarea name="" id="" cols="70" rows="30" value={dados} onChange={e => setDados(e.target.value)}></textarea>
       <button onClick={handleAddRepository}>Adicionar</button>
     </div>
   );
